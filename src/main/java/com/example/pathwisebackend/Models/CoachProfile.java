@@ -1,8 +1,10 @@
 package com.example.pathwisebackend.Models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "coach_profile")
 public class CoachProfile {
     @Id
