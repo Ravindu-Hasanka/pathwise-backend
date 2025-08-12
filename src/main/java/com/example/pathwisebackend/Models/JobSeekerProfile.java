@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "job_seeker_profile")
 public class JobSeekerProfile {
     @Id
-    private Long id; // same as user id
+    private Long id;
 
     private String location;
     private String currentRole;
