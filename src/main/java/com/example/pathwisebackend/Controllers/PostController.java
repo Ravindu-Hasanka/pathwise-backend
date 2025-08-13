@@ -5,6 +5,7 @@ import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.UserRepository;
 import com.example.pathwisebackend.Services.IPostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,17 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
+@RequiredArgsConstructor
 public class PostController {
 
     private final IPostService postService;
     private final UserRepository userRepository;
-
-    public PostController(IPostService postService,UserRepository userRepository) {
-
-        this.postService = postService;
-        this.userRepository = userRepository;
-    }
-
     @GetMapping
     public List<Post> getAllPosts() {
         return postService.getAllPosts();

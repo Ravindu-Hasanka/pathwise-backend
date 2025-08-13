@@ -6,21 +6,17 @@ import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.CommentRepository;
 import com.example.pathwisebackend.Repositories.PostRepository;
 import com.example.pathwisebackend.Repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommentServiceImpl implements ICommentService {
 
     private final CommentRepository commentRepo;
     private final PostRepository postRepo;
     private final UserRepository userRepo;
-
-    public CommentServiceImpl(CommentRepository commentRepo, PostRepository postRepo, UserRepository userRepo) {
-        this.commentRepo = commentRepo;
-        this.postRepo = postRepo;
-        this.userRepo = userRepo;
-    }
 
     @Override
     public Comment addComment(Long postId, Long userId, String text) {

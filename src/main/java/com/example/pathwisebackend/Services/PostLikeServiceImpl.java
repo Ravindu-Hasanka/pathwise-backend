@@ -7,20 +7,16 @@ import com.example.pathwisebackend.Repositories.PostLikeRepository;
 import com.example.pathwisebackend.Repositories.PostRepository;
 import com.example.pathwisebackend.Repositories.UserRepository;
 import com.example.pathwisebackend.Services.IPostLikeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PostLikeServiceImpl implements IPostLikeService {
 
     private final PostLikeRepository likeRepo;
     private final PostRepository postRepo;
     private final UserRepository userRepo;
-
-    public PostLikeServiceImpl(PostLikeRepository likeRepo, PostRepository postRepo, UserRepository userRepo) {
-        this.likeRepo = likeRepo;
-        this.postRepo = postRepo;
-        this.userRepo = userRepo;
-    }
 
     @Override
     public String toggleLike(Long postId, Long userId) {

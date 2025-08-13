@@ -2,6 +2,7 @@ package com.example.pathwisebackend.Controllers;
 
 import com.example.pathwisebackend.Models.Comment;
 import com.example.pathwisebackend.Services.ICommentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,13 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
+@RequiredArgsConstructor
 public class CommentController {
 
     private final ICommentService commentService;
-    public CommentController(ICommentService commentService) {
-        this.commentService = commentService;
-    }
-
     @PostMapping("/post/{postId}")
     public ResponseEntity<Comment> addComment(@PathVariable Long postId,
                                               @RequestParam Long userId,

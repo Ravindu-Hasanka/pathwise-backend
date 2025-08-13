@@ -2,19 +2,17 @@ package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Repositories.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements IPostService {
 
     private final PostRepository postRepository;
-
-    public PostServiceImpl(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
 
     @Override
     public List<Post> getAllPosts() {
