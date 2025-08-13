@@ -1,10 +1,14 @@
 package com.example.pathwisebackend.Controllers;
 
+import com.example.pathwisebackend.DTO.PostDTO;
 import com.example.pathwisebackend.Models.Post;
+import com.example.pathwisebackend.Models.User;
+import com.example.pathwisebackend.Repositories.UserRepository;
 import com.example.pathwisebackend.Services.IPostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -12,9 +16,12 @@ import java.util.List;
 public class PostController {
 
     private final IPostService postService;
+    private final UserRepository userRepository;
 
-    public PostController(IPostService postService) {
+    public PostController(IPostService postService,UserRepository userRepository) {
+
         this.postService = postService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -30,9 +37,20 @@ public class PostController {
     }
 
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
+    public Post createPost(@RequestBody PostDTO postRequest) {
+        User author = userRepository.findById(postRequest.getAuthorId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Post post = new Post();
+        post.setTitle(postRequest.getTitle());
+        post.setContent(postRequest.getContent());
+        post.setImageUrl(postRequest.getImageUrl());
+        post.setAuthor(author);
+        post.setCreatedAt(LocalDateTime.now());
+
         return postService.createPost(post);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {
