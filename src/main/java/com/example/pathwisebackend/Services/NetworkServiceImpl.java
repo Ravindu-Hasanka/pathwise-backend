@@ -46,5 +46,9 @@
         public List<User> getAllConnectedUsers(Long userId) {
             return connRepo.findAllConnectedUsers(userId);
         }
+        public List<User> getConnectionRequests(Long userId) {
+
+            return connRepo.findAllConnectionRequests(userId);
+        }
 
     }

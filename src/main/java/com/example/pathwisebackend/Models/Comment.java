@@ -1,7 +1,9 @@
 package com.example.pathwisebackend.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -16,17 +18,15 @@ public class Comment {
     private String text;
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User author;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
-
-    public void setPost(Post post) {
-        this.post=post;
-    }
 
 }
 

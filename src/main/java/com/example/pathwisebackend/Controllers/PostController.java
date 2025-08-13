@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class PostController {
 
     @PostMapping
     public Post createPost(@RequestBody PostDTO postRequest) {
-        User author = userRepository.findById(postRequest.getAuthorId())
+        User author = userRepository.findById(postRequest.getAuthor().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Post post = new Post();
@@ -60,5 +61,9 @@ public class PostController {
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/activity-feed/{userId}")
+    public List<PostDTO> getPostsByAuthors(@PathVariable Long userId) {
+        return postService.getPostsByAuthors(userId);
     }
 }

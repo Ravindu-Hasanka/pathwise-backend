@@ -1,5 +1,6 @@
 package com.example.pathwisebackend.Services;
 
+import com.example.pathwisebackend.DTO.PostDTO;
 import com.example.pathwisebackend.Models.Post;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface IPostService {
     Post createPost(Post post);
     Post updatePost(Long id, Post post);
     void deletePost(Long id);
+    List<PostDTO> getPostsByAuthors(Long userId);
 }
