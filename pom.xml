@@ -17,9 +17,7 @@
     <description>pathwise-backend</description>
 
     <properties>
-
-        <java.version>21</java.version> <!-- Use LTS version -->
-
+        <java.version>21</java.version>
     </properties>
 
     <dependencies>
