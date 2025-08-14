@@ -1,48 +1,20 @@
-package com.example.pathwisebackend.Models;
+package com.example.pathwisebackend.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.ElementCollection;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@Entity
 @Data
-@Table(name = "coach_profile")
-public class CoachProfile {
-    @Id
-    private Long id;
-
+@EqualsAndHashCode(callSuper = true)
+public class CoachProfileDTO extends UserDTO {
     private String location;
-    @ElementCollection
     private List<String> expertiseArea;
     private String yearsOfExperience;
-    @ElementCollection
     private List<String> preferredIndustries;
     private String hourlyRate;
     private String description;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getLocation() {
         return location;
@@ -84,12 +56,11 @@ public class CoachProfile {
         this.hourlyRate = hourlyRate;
     }
 
-    public User getUser() {
-        return user;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
-

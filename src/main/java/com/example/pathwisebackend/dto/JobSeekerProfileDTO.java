@@ -1,50 +1,21 @@
-package com.example.pathwisebackend.Models;
+package com.example.pathwisebackend.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@Entity
 @Data
-@Table(name = "job_seeker_profile")
-public class JobSeekerProfile {
-    @Id
-    private Long id;
-
+@EqualsAndHashCode(callSuper = true)
+public class JobSeekerProfileDTO extends UserDTO {
     private String location;
     private String currentRole;
     private String experience;
     private String education;
-
-    @ElementCollection
     private List<String> skills;
-
-    @ElementCollection
     private List<String> interests;
-    @ElementCollection
     private List<String> expertiseArea;
-
-
     private String careerGoals;
-    private String targetRole;
-    private String targetIndustry;
-    private String salaryExpectation;
-
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getLocation() {
         return location;
@@ -94,6 +65,14 @@ public class JobSeekerProfile {
         this.interests = interests;
     }
 
+    public List<String> getExpertiseArea() {
+        return expertiseArea;
+    }
+
+    public void setExpertiseArea(List<String> expertiseArea) {
+        this.expertiseArea = expertiseArea;
+    }
+
     public String getCareerGoals() {
         return careerGoals;
     }
@@ -125,20 +104,8 @@ public class JobSeekerProfile {
     public void setSalaryExpectation(String salaryExpectation) {
         this.salaryExpectation = salaryExpectation;
     }
-    public List<String> getExpertiseArea() {
-        return expertiseArea;
-    }
 
-    public void setExpertiseArea(List<String> expertiseArea) {
-        this.expertiseArea = expertiseArea;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    private String targetRole;
+    private String targetIndustry;
+    private String salaryExpectation;
 }
-
