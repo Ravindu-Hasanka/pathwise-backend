@@ -1,7 +1,11 @@
 package com.example.pathwisebackend.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -20,4 +24,9 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private CoachProfile coachProfile;
+
+    @OneToMany(mappedBy = "author")
+    @JsonBackReference
+    private List<Post> posts;
+
 }
