@@ -2,8 +2,8 @@ package com.example.pathwisebackend.Controllers;
 
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Services.OnboardingService;
-import com.example.pathwisebackend.dto.CoachProfileDTO;
-import com.example.pathwisebackend.dto.JobSeekerProfileDTO;
+import com.example.pathwisebackend.DTO.CoachProfileDTO;
+import com.example.pathwisebackend.DTO.JobSeekerProfileDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
