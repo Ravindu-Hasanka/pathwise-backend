@@ -1,7 +1,7 @@
     package com.example.pathwisebackend.Services;
 
     import com.example.pathwisebackend.Models.Connection;
-    import com.example.pathwisebackend.Models.ConnectionStatus;
+    import com.example.pathwisebackend.Enum.ConnectionStatus;
     import com.example.pathwisebackend.Models.User;
     import com.example.pathwisebackend.Repositories.ConnectionRepository;
     import com.example.pathwisebackend.Repositories.UserRepository;

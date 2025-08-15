@@ -12,14 +12,14 @@ import java.util.List;
 public class CoachProfile {
     @Id
     private Long id;
-    private String location;
+    private String location; // no need
     @ElementCollection
-    private List<String> expertiseArea;
-    private String yearsOfExperience;
+    private List<String> expertiseArea; // ui ux, frontend developer
+    private String yearsOfExperience; // years of experience
     @ElementCollection
-    private List<String> preferredIndustries;
+    private List<String> preferredIndustries; // his industry
     private String hourlyRate;
-    private String description;
+    private String description; // like bio
     @OneToOne
     @MapsId
     @JoinColumn(name = "user_id")
