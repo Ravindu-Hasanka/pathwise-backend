@@ -21,6 +21,6 @@ public class Connection {
     @ManyToOne @JoinColumn(name = "connected_user_id")
     private User connectedUser;
 
-    private LocalDateTime connectedAt = LocalDateTime.now();
+    private LocalDateTime connectedAt;
 }
 
