@@ -1,4 +1,4 @@
-package com.example.pathwisebackend.Services.impl;
+package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.PostLike;
