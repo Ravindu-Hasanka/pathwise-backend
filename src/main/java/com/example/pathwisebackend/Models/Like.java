@@ -4,23 +4,25 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "post_likes",
         uniqueConstraints = @UniqueConstraint(columnNames = {"post_id","user_id"}))
 @Data
-public class Like {
+public class PostLike {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long likeId;
+    private Long id;
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Post post; //post details
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; //person who liked the post
 
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
-
