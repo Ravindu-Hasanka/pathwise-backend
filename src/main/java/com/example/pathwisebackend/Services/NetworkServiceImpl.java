@@ -21,20 +21,20 @@
             return userRepo.save(user);
         }
 
-        public Connection requestConnection(Long userId, Long targetId) {
+        public Connection requestConnection(Long requestedUserId, Long userId) {
+            User requestedUser = userRepo.findById(requestedUserId).orElseThrow();
             User user = userRepo.findById(userId).orElseThrow();
-            User target = userRepo.findById(targetId).orElseThrow();
 
             Connection conn = new Connection();
+            conn.setRequestedUser(requestedUser);
             conn.setUser(user);
-            conn.setConnectedUser(target);
             return connRepo.save(conn);
         }
         public Connection acceptConnection(Long connectionId) {
             Connection connection = connRepo.findById(connectionId).orElseThrow();
 
             connection.setStatus(ConnectionStatus.CONNECTED);
-            connection.setConnectedAt(LocalDateTime.now());
+            connection.setUpdatedAt(LocalDateTime.now());
             return connRepo.save(connection);
         }
 

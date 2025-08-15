@@ -18,10 +18,6 @@ public class CoachingSessionController {
 
     private final ICoachingSessionService sessionService;
 
-    @PostMapping
-    public ResponseEntity<CoachingSession> schedule(@RequestBody SessionDTO dto) {
-        return ResponseEntity.ok(sessionService.scheduleSession(dto));
-    }
 
     @GetMapping("/coach/{coachId}")
     public ResponseEntity<List<CoachingSession>> getCoachSessions(@PathVariable Long coachId) {
@@ -32,7 +28,7 @@ public class CoachingSessionController {
     @PostMapping("/{id}/cancel")   public ResponseEntity<SessionDTO> cancel(@PathVariable Long id){ return ResponseEntity.ok(sessionService.cancel(id)); }
     @PostMapping("/{id}/complete") public ResponseEntity<SessionDTO> complete(@PathVariable Long id){ return ResponseEntity.ok(sessionService.complete(id)); }
 
-    @GetMapping("/coach/{coachId}")
+    @GetMapping("/{coachId}")
     public ResponseEntity<List<SessionDTO>> listForCoachByDate(
             @PathVariable Long coachId,
             @RequestParam LocalDateTime date) {

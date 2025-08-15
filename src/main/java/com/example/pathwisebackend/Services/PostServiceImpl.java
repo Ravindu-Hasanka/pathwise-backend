@@ -1,8 +1,6 @@
 package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.DTO.AuthorDTO;
-import com.example.pathwisebackend.DTO.CommentDTO;
-import com.example.pathwisebackend.DTO.LikeDTO;
 import com.example.pathwisebackend.DTO.PostDTO;
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
@@ -40,11 +38,11 @@ public class PostServiceImpl implements IPostService {
     public Post updatePost(Long id, Post updatedPost) {
         return postRepository.findById(id)
                 .map(post -> {
-                    post.setTitle(updatedPost.getTitle());
+                    post.setCaption(updatedPost.getCaption());
                     post.setContent(updatedPost.getContent());
-                    post.setImageUrl(updatedPost.getImageUrl());
+                    post.setContentType(updatedPost.getContentType());
                     post.setCreatedAt(updatedPost.getCreatedAt());
-                    post.setAuthor(updatedPost.getAuthor());
+                    post.setCreatedBy(updatedPost.getCreatedBy());
                     return postRepository.save(post);
                 })
                 .orElseThrow(() -> new RuntimeException("Post not found with id " + id));
@@ -64,59 +62,57 @@ public class PostServiceImpl implements IPostService {
                 .toList();
 
         // 2. Fetch posts by connected authors
-        List<Post> posts = postRepository.findByAuthorIdInOrderByCreatedAtDesc(authorIds);
+        List<Post> posts = postRepository.findByCreatedByIdInOrderByCreatedAtDesc(authorIds);
 
         // 3. Map to PostDTO safely
         List<PostDTO> postDTOs = posts.stream()
                 .map(post -> {
                     // Map author
                     AuthorDTO authorDTO = new AuthorDTO(
-                            post.getAuthor().getId(),
-                            post.getAuthor().getName(),
-                            post.getAuthor().getEmail(),
-                            post.getAuthor().getRole()
+                            post.getCreatedBy().getId(),
+                            post.getCreatedBy().getName(),
+                            post.getCreatedBy().getEmail(),
+                            post.getCreatedBy().getRole()
                     );
 
-                    // Map comments to DTO
-                    List<CommentDTO> commentDTOs = post.getComments().stream()
-                            .map(c -> new CommentDTO(
-                                    c.getId(),
-                                    c.getText(),
-                                    new AuthorDTO(
-                                            c.getAuthor().getId(),
-                                            c.getAuthor().getName(),
-                                            c.getAuthor().getEmail(),
-                                            c.getAuthor().getRole()
-                                    ),
-                                    c.getCreatedAt()
-                            ))
-                            .toList();
-
-                    // Map likes to DTO
-                    List<LikeDTO> likeDTOs = post.getLikes().stream()
-                            .map(l -> new LikeDTO(
-                                    l.getId(),
-                                    new AuthorDTO(
-                                            l.getUser().getId(),
-                                            l.getUser().getName(),
-                                            l.getUser().getEmail(),
-                                            l.getUser().getRole()
-                                    ),
-                                    l.getCreatedAt()
-                            ))
-                            .toList();
+//                    // Map comments to DTO
+//                    List<CommentDTO> commentDTOs = post.getComments().stream()
+//                            .map(c -> new CommentDTO(
+//                                    c.getId(),
+//                                    c.getText(),
+//                                    new AuthorDTO(
+//                                            c.getAuthor().getId(),
+//                                            c.getAuthor().getName(),
+//                                            c.getAuthor().getEmail(),
+//                                            c.getAuthor().getRole()
+//                                    ),
+//                                    c.getCreatedAt()
+//                            ))
+//                            .toList();
+//
+//                    // Map likes to DTO
+//                    List<LikeDTO> likeDTOs = post.getLikes().stream()
+//                            .map(l -> new LikeDTO(
+//                                    l.getId(),
+//                                    new AuthorDTO(
+//                                            l.getUser().getId(),
+//                                            l.getUser().getName(),
+//                                            l.getUser().getEmail(),
+//                                            l.getUser().getRole()
+//                                    ),
+//                                    l.getCreatedAt()
+//                            ))
+//                            .toList();
 
                     // Create PostDTO
                     return new PostDTO(
-                            post.getId(),
-                            post.getTitle(),
+                            post.getPostId(),
+                            post.getCaption(),
                             post.getContent(),
-                            post.getImageUrl(),
+                            post.getContentType(),
                             post.getCreatedAt(),
                             post.getUpdatedAt(),
-                            authorDTO,
-                            commentDTOs,
-                            likeDTOs
+                            authorDTO
                     );
                 })
                 .toList();

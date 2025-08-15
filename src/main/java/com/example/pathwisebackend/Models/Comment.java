@@ -1,6 +1,5 @@
 package com.example.pathwisebackend.Models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -12,10 +11,11 @@ import java.time.LocalDateTime;
 @Data
 public class Comment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long commentId;
 
     @Column(columnDefinition = "TEXT")
-    private String text;
+    private String name;
+    private String comment;
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ToString.Exclude

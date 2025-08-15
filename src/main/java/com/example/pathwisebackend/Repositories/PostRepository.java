@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByAuthorIdInOrderByCreatedAtDesc(List<Long> authorIds);
+    List<Post> findByCreatedByIdInOrderByCreatedAtDesc(List<Long> authorIds);
 }
