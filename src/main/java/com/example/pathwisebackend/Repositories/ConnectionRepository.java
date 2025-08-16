@@ -19,8 +19,12 @@ public interface ConnectionRepository extends JpaRepository<Connection, Long> {
             "SELECT c.requester FROM Connection c WHERE c.requestedUser.id = :userId AND c.status = 'CONNECTED'")
     List<User> findAllConnectedUsers(@Param("id") Long userId);
 
-    @Query("SELECT c.requestedUser FROM Connection c WHERE c.requester.id = :userId AND c.status = 'PENDING' " +
-            "UNION " +
-            "SELECT c.requester FROM Connection c WHERE c.requestedUser.id = :userId AND c.status = 'PENDING'")
-    List<User> findAllConnectionRequests(@Param("id") Long userId);
+    @Query("SELECT c FROM Connection c " +
+            "WHERE (c.requester.id = :userId) " +
+            "AND c.status = 'PENDING'")
+    List<Connection> findAllConnectionsByUserId(@Param("userId") Long userId);
+    @Query("SELECT c FROM Connection c " +
+            "WHERE (c.requester.id = :userId) " +
+            "AND c.status = 'CONNECTED'")
+    List<Connection> findAllConnections(@Param("userId") Long userId);
 }

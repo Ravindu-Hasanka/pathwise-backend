@@ -1,5 +1,6 @@
 package com.example.pathwisebackend.Controllers;
 
+import com.example.pathwisebackend.DTO.ConnectionDTO;
 import com.example.pathwisebackend.Interfaces.INetworkService;
 import com.example.pathwisebackend.Models.Connection;
 import com.example.pathwisebackend.Models.User;
@@ -29,12 +30,12 @@ public class NetworkController {
         return networkService.ignoreConnectionReq(connectionId);
     }
     @GetMapping("/{userId}/connections")
-    public List<User> getConnectedUsers(@PathVariable Long userId) {
+    public List<ConnectionDTO> getConnectedUsers(@PathVariable Long userId) {
         return networkService.getAllConnectedUsers(userId);
     }
 
     @GetMapping("/{userId}/requests")
-    public List<User> getConnectionRequests(@PathVariable Long userId) {
+    public List<ConnectionDTO> getConnectionRequests(@PathVariable Long userId) {
         return networkService.getConnectionRequests(userId);
     }
 }
