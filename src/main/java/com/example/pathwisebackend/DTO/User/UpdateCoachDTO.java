@@ -1,4 +1,4 @@
-package com.example.pathwisebackend.DTO;
+package com.example.pathwisebackend.DTO.User;
 
 import jakarta.persistence.ElementCollection;
 import lombok.Data;
@@ -8,6 +8,6 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CoachProfileDTO extends UserDTO {
+public class UpdateCoachDTO extends UserDTO {
     private String description;
 }

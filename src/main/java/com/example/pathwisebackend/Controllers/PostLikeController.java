@@ -1,6 +1,6 @@
 package com.example.pathwisebackend.Controllers;
 
-import com.example.pathwisebackend.Services.IPostLikeService;
+import com.example.pathwisebackend.Interfaces.IPostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,11 @@
 package com.example.pathwisebackend.Controllers;
 
+import com.example.pathwisebackend.DTO.User.CreateCoachDTO;
+import com.example.pathwisebackend.DTO.User.CreateJobSeekerDTO;
+import com.example.pathwisebackend.DTO.User.UpdateCoachDTO;
+import com.example.pathwisebackend.DTO.User.UpdateJobSeekerDTO;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Services.OnboardingService;
-import com.example.pathwisebackend.DTO.CoachProfileDTO;
-import com.example.pathwisebackend.DTO.JobSeekerProfileDTO;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,13 @@ public class OnboardingController {
     private  OnboardingService onboardingService;
 
     @PostMapping("/jobseeker")
-    public ResponseEntity<User> createJobSeeker(@RequestBody JobSeekerProfileDTO dto) {
+    public ResponseEntity<User> createJobSeeker(@RequestBody CreateJobSeekerDTO dto) {
         User savedUser = onboardingService.createJobSeeker(dto);
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/coach")
-    public ResponseEntity<User> createCoach(@RequestBody CoachProfileDTO dto) {
+    public ResponseEntity<User> createCoach(@RequestBody CreateCoachDTO dto) {
         User savedUser = onboardingService.createCoach(dto);
         return ResponseEntity.ok(savedUser);
     }
@@ -41,7 +42,7 @@ public class OnboardingController {
     @PutMapping("/jobseeker/{id}")
     public ResponseEntity<?> updateJobSeeker(
             @PathVariable Long id,
-            @RequestBody JobSeekerProfileDTO dto
+            @RequestBody UpdateJobSeekerDTO dto
     ) {
         try {
             User updatedUser = onboardingService.updateJobSeeker(id, dto);
@@ -55,7 +56,7 @@ public class OnboardingController {
     @PutMapping("/coach/{id}")
     public ResponseEntity<?> updateCoach(
             @PathVariable Long id,
-            @RequestBody CoachProfileDTO dto
+            @RequestBody UpdateCoachDTO dto
     ) {
         try {
             User updatedUser = onboardingService.updateCoach(id, dto);

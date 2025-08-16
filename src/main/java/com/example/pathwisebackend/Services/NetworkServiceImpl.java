@@ -1,5 +1,6 @@
     package com.example.pathwisebackend.Services;
 
+    import com.example.pathwisebackend.Interfaces.INetworkService;
     import com.example.pathwisebackend.Models.Connection;
     import com.example.pathwisebackend.Enum.ConnectionStatus;
     import com.example.pathwisebackend.Models.User;
@@ -13,7 +14,7 @@
 
     @Service
     @RequiredArgsConstructor
-    public class NetworkServiceImpl implements INetworkService  {
+    public class NetworkServiceImpl implements INetworkService {
         private final UserRepository userRepo;
         private final ConnectionRepository connRepo;
 
