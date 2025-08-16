@@ -1,5 +1,6 @@
 package com.example.pathwisebackend.Services;
 
+import com.example.pathwisebackend.Interfaces.ICommentService;
 import com.example.pathwisebackend.Models.Comment;
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
@@ -41,7 +42,7 @@ public class CommentServiceImpl implements ICommentService {
         Comment comment = commentRepo.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-        if (!comment.getAuthor().getId().equals(userId)) {
+        if (!comment.getAuthor().getUserId().equals(userId)) {
             throw new RuntimeException("You can only delete your own comments");
         }
 

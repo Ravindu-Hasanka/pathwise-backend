@@ -4,7 +4,7 @@ import com.example.pathwisebackend.DTO.PostDTO;
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.UserRepository;
-import com.example.pathwisebackend.Services.IPostService;
+import com.example.pathwisebackend.Interfaces.IPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
