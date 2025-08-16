@@ -1,5 +1,6 @@
     package com.example.pathwisebackend.Services;
 
+    import com.example.pathwisebackend.DTO.ConnectionDTO;
     import com.example.pathwisebackend.Models.Connection;
     import com.example.pathwisebackend.Models.ConnectionStatus;
     import com.example.pathwisebackend.Models.User;
@@ -45,12 +46,45 @@
             return connRepo.save(connection);
         }
 
-        public List<User> getAllConnectedUsers(Long userId) {
-            return connRepo.findAllConnectedUsers(userId);
-        }
-        public List<User> getConnectionRequests(Long userId) {
+        public List<ConnectionDTO> getAllConnectedUsers(Long userId) {
 
-            return connRepo.findAllConnectionRequests(userId);
+            List<Connection> requests= connRepo.findAllConnections(userId);
+            return requests.stream()
+                    .map(c -> {
+                        User otherUser;
+                        if (c.getUser().getId().equals(userId)) {
+                            otherUser = c.getRequestedUser();
+                        } else {
+                            otherUser = c.getUser();
+                        }
+                        ConnectionDTO dto = new ConnectionDTO();
+                        dto.setConnectionId(c.getConnectionId());
+                        dto.setRequestedUserId(otherUser.getId());
+                        dto.setRequestedUserName(otherUser.getName());
+                        dto.setJobRole(otherUser.getRole());
+                        dto.setEmail(otherUser.getEmail());
+                        dto.setRequestedAt(c.getRequestedAt());
+                        return dto;
+                    })
+                    .toList();
+
+        }
+        public List<ConnectionDTO> getConnectionRequests(Long userId) {
+
+            List<Connection> requests= connRepo.findAllConnectionsByUserId(userId);
+            return requests.stream()
+                    .map(c -> {
+                        User requester = c.getRequestedUser();
+                        ConnectionDTO dto = new ConnectionDTO();
+                        dto.setConnectionId(c.getConnectionId());
+                        dto.setRequestedUserId(requester.getId());
+                        dto.setRequestedUserName(requester.getName());
+                        dto.setJobRole(requester.getRole());
+                        dto.setEmail(requester.getEmail());
+                        dto.setRequestedAt(c.getRequestedAt());
+                        return dto;
+                    })
+                    .toList();
         }
 
     }
