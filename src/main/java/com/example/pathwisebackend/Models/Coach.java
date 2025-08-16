@@ -1,9 +1,10 @@
 package com.example.pathwisebackend.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -12,4 +13,12 @@ import lombok.Data;
 public class Coach extends User {
 
     private String description;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "industries",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "industry_id")
+//    )
+//    private Set<Industry> industries = new HashSet<>();
 }

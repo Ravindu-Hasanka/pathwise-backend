@@ -1,8 +1,8 @@
 package com.example.pathwisebackend.Controllers;
 
+import com.example.pathwisebackend.Interfaces.INetworkService;
 import com.example.pathwisebackend.Models.Connection;
 import com.example.pathwisebackend.Models.User;
-import com.example.pathwisebackend.Services.INetworkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

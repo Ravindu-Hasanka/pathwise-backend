@@ -16,10 +16,10 @@ public interface CoachingSessionRepository extends JpaRepository<CoachingSession
 
     @Query("""
      select (count(cs) > 0) from CoachingSession cs
-     where cs.coach.id = :coachId
+     where cs.coach.userId = :coachId
        and cs.status <> "CANCELLED"
        and cs.startTime < :endT and cs.endTime > :startT
-       and (:ignoreId is null or cs.id <> :ignoreId)
+       and (:ignoreId is null or cs.sessionId <> :ignoreId)
   """)
     boolean coachHasOverlap(@Param("coachId") Long coachId,
                             @Param("startT") LocalDateTime startT,

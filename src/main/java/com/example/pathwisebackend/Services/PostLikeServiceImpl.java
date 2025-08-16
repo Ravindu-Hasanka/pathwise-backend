@@ -1,5 +1,6 @@
 package com.example.pathwisebackend.Services;
 
+import com.example.pathwisebackend.Interfaces.IPostLikeService;
 import com.example.pathwisebackend.Models.Like;
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
@@ -30,7 +31,7 @@ public class PostLikeServiceImpl implements IPostLikeService {
                 .orElseGet(() -> {
                     Like newLike = new Like();
                     newLike.setPost(post);
-                    newLike.setUser(user);
+                    newLike.setCreatedBy(user);
                     likeRepo.save(newLike);
                     return "Liked";
                 });
