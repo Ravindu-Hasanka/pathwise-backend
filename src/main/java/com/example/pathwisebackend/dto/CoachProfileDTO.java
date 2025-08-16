@@ -1,10 +1,8 @@
 package com.example.pathwisebackend.DTO;
 
-import jakarta.persistence.ElementCollection;
+import com.example.pathwisebackend.DTO.User.UserDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

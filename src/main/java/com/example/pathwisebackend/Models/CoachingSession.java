@@ -1,17 +1,19 @@
 package com.example.pathwisebackend.Models;
 
+import com.example.pathwisebackend.Enum.SessionStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "coaching-sessions")
+@Table(name = "coaching_sessions")
 @Data
 public class CoachingSession {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long sessionId;
 
     private String sessionType;
     private LocalDateTime startTime;
@@ -21,11 +23,11 @@ public class CoachingSession {
     private String notes;
 
     @ManyToOne
-    @JoinColumn(name = "coach_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User coach;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User student;
 
     @Enumerated(EnumType.STRING)

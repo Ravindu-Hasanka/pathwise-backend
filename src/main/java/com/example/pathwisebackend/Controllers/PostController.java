@@ -34,15 +34,14 @@ public class PostController {
 
     @PostMapping
     public Post createPost(@RequestBody PostDTO postRequest) {
-        User author = userRepository.findById(postRequest.getAuthor().getId())
+        User author = userRepository.findById(postRequest.getCreatedBy().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Post post = new Post();
-        post.setCaption(postRequest.getTitle());
+        post.setCaption(postRequest.getCaption());
         post.setContent(postRequest.getContent());
         post.setContentType(postRequest.getContentType());
         post.setCreatedBy(author);
-        post.setCreatedAt(LocalDateTime.now());
 
         return postService.createPost(post);
     }

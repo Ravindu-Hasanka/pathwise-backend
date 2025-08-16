@@ -2,7 +2,7 @@ package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.DTO.SessionDTO;
 import com.example.pathwisebackend.Models.CoachingSession;
-import com.example.pathwisebackend.Models.SessionStatus;
+import com.example.pathwisebackend.Enum.SessionStatus;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.CoachingSessionRepository;
 import com.example.pathwisebackend.Repositories.UserRepository;
@@ -23,8 +23,8 @@ public class CoachingSessionServiceImpl implements  ICoachingSessionService {
 
     private SessionDTO map(CoachingSession cs) {
         return new SessionDTO(
-                cs.getCoach().getId(),
-                cs.getStudent().getId(),
+                cs.getCoach().getUserId(),
+                cs.getStudent().getUserId(),
                 cs.getSessionType(),
                 cs.getStartTime(),
                 Duration.between(cs.getStartTime(), cs.getEndTime()).toMinutes(),
@@ -44,7 +44,7 @@ public class CoachingSessionServiceImpl implements  ICoachingSessionService {
         User coach = userRepo.findById(dto.getCoachId()).orElseThrow();
         User student = userRepo.findById(dto.getStudentId()).orElseThrow();
 
-        ensureNoOverlap(coach.getId(), dto.getStartTime(), dto.getStartTime().plusMinutes(dto.getDuration()), null);
+        ensureNoOverlap(coach.getUserId(), dto.getStartTime(), dto.getStartTime().plusMinutes(dto.getDuration()), null);
         CoachingSession session = new CoachingSession();
         session.setCoach(coach);
         session.setStudent(student);
