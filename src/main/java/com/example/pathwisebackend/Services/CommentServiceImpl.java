@@ -26,14 +26,14 @@ public class CommentServiceImpl implements ICommentService {
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setAuthor(user);
-        comment.setText(text);
+        comment.setComment(text);
 
         return commentRepo.save(comment);
     }
 
     @Override
     public List<Comment> getCommentsByPost(Long postId) {
-        return commentRepo.findByPostId(postId);
+        return commentRepo.findByPostPostId(postId);
     }
 
     @Override

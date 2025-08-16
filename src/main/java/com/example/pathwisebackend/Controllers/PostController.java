@@ -38,10 +38,10 @@ public class PostController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Post post = new Post();
-        post.setTitle(postRequest.getTitle());
+        post.setCaption(postRequest.getTitle());
         post.setContent(postRequest.getContent());
-        post.setImageUrl(postRequest.getImageUrl());
-        post.setAuthor(author);
+        post.setContentType(postRequest.getContentType());
+        post.setCreatedBy(author);
         post.setCreatedAt(LocalDateTime.now());
 
         return postService.createPost(post);

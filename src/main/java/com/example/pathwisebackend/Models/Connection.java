@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class Connection {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long connectionId;
 
     @Enumerated(EnumType.STRING)
     private ConnectionStatus status = ConnectionStatus.PENDING;
@@ -18,9 +18,10 @@ public class Connection {
     @ManyToOne @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne @JoinColumn(name = "connected_user_id")
-    private User connectedUser;
+    @ManyToOne @JoinColumn(name = "requested_user_id")
+    private User requestedUser;
 
-    private LocalDateTime connectedAt = LocalDateTime.now();
+    private LocalDateTime requestedAt;
+    private LocalDateTime updatedAt;
 }
 

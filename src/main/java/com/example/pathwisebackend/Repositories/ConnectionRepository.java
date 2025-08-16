@@ -11,13 +11,13 @@ import java.util.List;
 
 @Repository
 public interface ConnectionRepository extends JpaRepository<Connection, Long> {
-    @Query("SELECT c.connectedUser FROM Connection c WHERE c.user.id = :userId AND c.status = 'CONNECTED' " +
+    @Query("SELECT c.requestedUser FROM Connection c WHERE c.user.id = :userId AND c.status = 'CONNECTED' " +
             "UNION " +
-            "SELECT c.user FROM Connection c WHERE c.connectedUser.id = :userId AND c.status = 'CONNECTED'")
+            "SELECT c.user FROM Connection c WHERE c.requestedUser.id = :userId AND c.status = 'CONNECTED'")
     List<User> findAllConnectedUsers(@Param("userId") Long userId);
 
-    @Query("SELECT c.connectedUser FROM Connection c WHERE c.user.id = :userId AND c.status = 'PENDING' " +
+    @Query("SELECT c.requestedUser FROM Connection c WHERE c.user.id = :userId AND c.status = 'PENDING' " +
             "UNION " +
-            "SELECT c.user FROM Connection c WHERE c.connectedUser.id = :userId AND c.status = 'PENDING'")
+            "SELECT c.user FROM Connection c WHERE c.requestedUser.id = :userId AND c.status = 'PENDING'")
     List<User> findAllConnectionRequests(@Param("userId") Long userId);
 }

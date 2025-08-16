@@ -3,7 +3,6 @@ package com.example.pathwisebackend.Controllers;
 import com.example.pathwisebackend.Models.Connection;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Services.INetworkService;
-import com.example.pathwisebackend.Services.NetworkServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NetworkController {
     private final INetworkService networkService;
-
-
 
     @PostMapping("/connect/{userId}/{targetId}")
     public Connection connect(@PathVariable Long userId, @PathVariable Long targetId) {
