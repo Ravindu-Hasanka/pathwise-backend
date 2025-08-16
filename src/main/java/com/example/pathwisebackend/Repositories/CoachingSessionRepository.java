@@ -12,11 +12,12 @@ import java.util.List;
 @Repository
 public interface CoachingSessionRepository extends JpaRepository<CoachingSession, Long> {
     List<CoachingSession> findByCoachId(Long coachId);
+
     List<CoachingSession> findByStudentId(Long studentId);
 
     @Query("""
      select (count(cs) > 0) from CoachingSession cs
-     where cs.coach.userId = :coachId
+     where cs.coach.id = :coachId
        and cs.status <> "CANCELLED"
        and cs.startTime < :endT and cs.endTime > :startT
        and (:ignoreId is null or cs.sessionId <> :ignoreId)

@@ -32,4 +32,3 @@ public class Comment {
     @JsonBackReference
     private Post post;
 }
-

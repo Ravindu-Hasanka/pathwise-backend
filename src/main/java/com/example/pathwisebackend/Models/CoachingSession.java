@@ -23,11 +23,11 @@ public class CoachingSession {
     private String notes;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "coach_id", nullable = false)  // Changed to coach_id
     private User coach;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "student_id", nullable = false)  // Changed to student_id
     private User student;
 
     @Enumerated(EnumType.STRING)

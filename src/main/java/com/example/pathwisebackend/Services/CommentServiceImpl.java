@@ -42,7 +42,7 @@ public class CommentServiceImpl implements ICommentService {
         Comment comment = commentRepo.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-        if (!comment.getAuthor().getUserId().equals(userId)) {
+        if (!comment.getAuthor().getId().equals(userId)) {
             throw new RuntimeException("You can only delete your own comments");
         }
 

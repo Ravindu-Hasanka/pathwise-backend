@@ -60,7 +60,7 @@ public class PostServiceImpl implements IPostService {
     public List<PostDTO> getPostsByAuthors(Long userId) {
         List<User> connections = connectionRepository.findAllConnectedUsers(userId);
         List<Long> authorIds = connections.stream()
-                .map(User::getUserId)
+                .map(User::getId)
                 .toList();
 
         List<Post> posts = postRepository.findByCreatedByIdInOrderByCreatedAtDesc(authorIds);
@@ -68,7 +68,7 @@ public class PostServiceImpl implements IPostService {
         List<PostDTO> postDTOs = posts.stream()
                 .map(post -> {
                     AuthorDTO authorDTO = new AuthorDTO(
-                            post.getCreatedBy().getUserId(),
+                            post.getCreatedBy().getId(),
                             post.getCreatedBy().getName(),
                             post.getCreatedBy().getEmail(),
                             post.getCreatedBy().getRole()
@@ -79,7 +79,7 @@ public class PostServiceImpl implements IPostService {
                                     c.getCommentId(),
                                     c.getComment(),
                                     new AuthorDTO(
-                                            c.getAuthor().getUserId(),
+                                            c.getAuthor().getId(),
                                             c.getAuthor().getName(),
                                             c.getAuthor().getEmail(),
                                             c.getAuthor().getRole()
@@ -92,7 +92,7 @@ public class PostServiceImpl implements IPostService {
                             .map(l -> new LikeDTO(
                                     l.getLikeId(),
                                     new AuthorDTO(
-                                            l.getCreatedBy().getUserId(),
+                                            l.getCreatedBy().getId(),
                                             l.getCreatedBy().getName(),
                                             l.getCreatedBy().getEmail(),
                                             l.getCreatedBy().getRole()
