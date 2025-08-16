@@ -12,6 +12,7 @@ import com.example.pathwisebackend.Repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,13 +60,16 @@ public class PostServiceImpl implements IPostService {
 
     public List<PostDTO> getPostsByAuthors(Long userId) {
         List<User> connections = connectionRepository.findAllConnectedUsers(userId);
-        List<Long> authorIds = connections.stream()
-                .map(User::getId)
-                .toList();
+        List<Long> authorIds = new ArrayList<>(
+                connections.stream()
+                        .map(User::getId)
+                        .toList()
+        );
+        authorIds.add(userId);
 
         List<Post> posts = postRepository.findByCreatedByIdInOrderByCreatedAtDesc(authorIds);
 
-        List<PostDTO> postDTOs = posts.stream()
+        return posts.stream()
                 .map(post -> {
                     AuthorDTO authorDTO = new AuthorDTO(
                             post.getCreatedBy().getId(),
@@ -114,7 +118,5 @@ public class PostServiceImpl implements IPostService {
                     );
                 })
                 .toList();
-
-        return postDTOs;
     }
 }
