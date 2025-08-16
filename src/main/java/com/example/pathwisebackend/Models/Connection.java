@@ -19,11 +19,11 @@ public class Connection {
     private ConnectionStatus status = ConnectionStatus.PENDING;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "requester_id", nullable = false)
+    private User requester;
 
     @ManyToOne
-    @JoinColumn(name = "requested_user_id", nullable = false)
+    @JoinColumn(name = "requested_id", nullable = false)
     private User requestedUser;
 
     private LocalDateTime requestedAt;

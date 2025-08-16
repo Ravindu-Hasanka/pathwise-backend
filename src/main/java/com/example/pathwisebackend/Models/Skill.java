@@ -18,9 +18,9 @@ public class Skill {
     @NotBlank(message = "Skill name is required")
     private String name;
 
-    @ManyToMany(mappedBy = "industries")
+    @ManyToMany(mappedBy = "skills")
     private Set<JobSeeker> jobSeekers = new HashSet<>();
 
-    @ManyToMany(mappedBy = "industries")
+    @ManyToMany(mappedBy = "skills")
     private Set<Coach> coaches = new HashSet<>();
 }

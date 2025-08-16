@@ -29,9 +29,9 @@ public class Experience {
 
     private Date endedAt;
 
-    @ManyToMany(mappedBy = "industries")
+    @ManyToMany(mappedBy = "experiences")
     private Set<JobSeeker> jobSeekers = new HashSet<>();
 
-    @ManyToMany(mappedBy = "industries")
+    @ManyToMany(mappedBy = "experiences")
     private Set<Coach> coaches = new HashSet<>();
 }

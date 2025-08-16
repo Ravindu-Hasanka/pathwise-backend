@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -27,4 +29,10 @@ public class Education {
 
     @Temporal(TemporalType.DATE)
     private Date endDate = new Date();
+
+    @ManyToMany(mappedBy = "educations")
+    private Set<JobSeeker> jobSeekers = new HashSet<>();
+
+    @ManyToMany(mappedBy = "educations")
+    private Set<Coach> coaches = new HashSet<>();
 }

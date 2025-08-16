@@ -28,7 +28,7 @@
 
             Connection conn = new Connection();
             conn.setRequestedUser(requestedUser);
-            conn.setUser(user);
+            conn.setRequester(user);
             return connRepo.save(conn);
         }
         public Connection acceptConnection(Long connectionId) {

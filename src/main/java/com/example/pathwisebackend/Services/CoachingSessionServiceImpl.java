@@ -23,8 +23,8 @@ public class CoachingSessionServiceImpl implements  ICoachingSessionService {
 
     private SessionDTO map(CoachingSession cs) {
         return new SessionDTO(
-                cs.getCoach().getUserId(),
-                cs.getStudent().getUserId(),
+                cs.getCoach().getId(),
+                cs.getStudent().getId(),
                 cs.getSessionType(),
                 cs.getStartTime(),
                 Duration.between(cs.getStartTime(), cs.getEndTime()).toMinutes(),
@@ -44,7 +44,7 @@ public class CoachingSessionServiceImpl implements  ICoachingSessionService {
         User coach = userRepo.findById(dto.getCoachId()).orElseThrow();
         User student = userRepo.findById(dto.getStudentId()).orElseThrow();
 
-        ensureNoOverlap(coach.getUserId(), dto.getStartTime(), dto.getStartTime().plusMinutes(dto.getDuration()), null);
+        ensureNoOverlap(coach.getId(), dto.getStartTime(), dto.getStartTime().plusMinutes(dto.getDuration()), null);
         CoachingSession session = new CoachingSession();
         session.setCoach(coach);
         session.setStudent(student);

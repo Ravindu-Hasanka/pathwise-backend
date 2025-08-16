@@ -3,6 +3,7 @@ package com.example.pathwisebackend.Models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,9 +19,7 @@ public class Industry {
     @NotBlank(message = "Industry name is required")
     private String name;
 
-//    @ManyToMany(mappedBy = "industries")
-//    private Set<JobSeeker> jobSeekers = new HashSet<>();
-//
-//    @ManyToMany(mappedBy = "industries")
-//    private Set<Coach> coaches = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
 }

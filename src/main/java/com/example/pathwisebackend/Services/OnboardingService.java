@@ -96,7 +96,7 @@ public class OnboardingService {
         if (dto.getEmail() != null && !dto.getEmail().isBlank()) {
             Optional<User> existingUser = userRepository.findByEmail(dto.getEmail());
 
-            if (existingUser.isPresent() && !existingUser.get().getUserId().equals(coach.getUserId())) {
+            if (existingUser.isPresent() && !existingUser.get().getId().equals(coach.getId())) {
                 throw new Exception("User with this email already exists");
             }
             coach.setEmail(dto.getEmail());
