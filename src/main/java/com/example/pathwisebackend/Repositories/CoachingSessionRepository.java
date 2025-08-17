@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface CoachingSessionRepository extends JpaRepository<CoachingSession, Long> {
     List<CoachingSession> findByCoachId(Long coachId);
+
     List<CoachingSession> findByStudentId(Long studentId);
 
     @Query("""
@@ -19,7 +20,7 @@ public interface CoachingSessionRepository extends JpaRepository<CoachingSession
      where cs.coach.id = :coachId
        and cs.status <> "CANCELLED"
        and cs.startTime < :endT and cs.endTime > :startT
-       and (:ignoreId is null or cs.id <> :ignoreId)
+       and (:ignoreId is null or cs.sessionId <> :ignoreId)
   """)
     boolean coachHasOverlap(@Param("coachId") Long coachId,
                             @Param("startT") LocalDateTime startT,

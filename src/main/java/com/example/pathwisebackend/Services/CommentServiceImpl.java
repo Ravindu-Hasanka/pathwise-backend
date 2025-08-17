@@ -2,6 +2,7 @@ package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.DTO.AuthorDTO;
 import com.example.pathwisebackend.DTO.CommentDTO;
+import com.example.pathwisebackend.Interfaces.ICommentService;
 import com.example.pathwisebackend.Models.Comment;
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;

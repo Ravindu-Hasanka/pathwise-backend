@@ -2,7 +2,7 @@ package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.DTO.SessionDTO;
 import com.example.pathwisebackend.Models.CoachingSession;
-import com.example.pathwisebackend.Models.SessionStatus;
+import com.example.pathwisebackend.Enum.SessionStatus;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.CoachingSessionRepository;
 import com.example.pathwisebackend.Repositories.UserRepository;

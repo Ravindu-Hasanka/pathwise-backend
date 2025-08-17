@@ -1,3 +1,4 @@
+
 package com.example.pathwisebackend.DTO;
 
 import lombok.Data;
@@ -13,3 +14,4 @@ public class ConnectionDTO {
     private String email;
     private LocalDateTime requestedAt;
 }
+

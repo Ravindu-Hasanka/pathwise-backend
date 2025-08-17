@@ -2,7 +2,7 @@ package com.example.pathwisebackend.Controllers;
 
 import com.example.pathwisebackend.DTO.CommentDTO;
 import com.example.pathwisebackend.Models.Comment;
-import com.example.pathwisebackend.Services.ICommentService;
+import com.example.pathwisebackend.Interfaces.ICommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
