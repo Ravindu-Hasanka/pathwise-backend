@@ -1,4 +1,4 @@
-package com.example.pathwisebackend.Services;
+package com.example.pathwisebackend.Interfaces;
 
 import com.example.pathwisebackend.DTO.SessionDTO;
 import com.example.pathwisebackend.Models.CoachingSession;

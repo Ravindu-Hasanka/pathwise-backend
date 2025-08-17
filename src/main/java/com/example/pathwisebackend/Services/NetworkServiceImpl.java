@@ -23,13 +23,14 @@ public class NetworkServiceImpl implements INetworkService {
         return userRepo.save(user);
     }
 
-    public Connection requestConnection(Long requestedUserId, Long userId) {
-        User requestedUser = userRepo.findById(requestedUserId).orElseThrow();
+    public Connection requestConnection(Long senderId, Long userId) {
+        User requestedUser = userRepo.findById(senderId).orElseThrow();
         User user = userRepo.findById(userId).orElseThrow();
 
         Connection conn = new Connection();
         conn.setRequestedUser(requestedUser);
         conn.setRequester(user);
+        conn.setRequestedAt(LocalDateTime.now());
         return connRepo.save(conn);
     }
     public Connection acceptConnection(Long connectionId) {
@@ -44,6 +45,7 @@ public class NetworkServiceImpl implements INetworkService {
         Connection connection = connRepo.findById(connectionId).orElseThrow();
 
         connection.setStatus(ConnectionStatus.IGNORED);
+        connection.setUpdatedAt(LocalDateTime.now());
         return connRepo.save(connection);
     }
 
