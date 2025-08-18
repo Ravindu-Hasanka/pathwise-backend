@@ -1,9 +1,10 @@
 package com.example.pathwisebackend.Services;
 
+import com.example.pathwisebackend.Interfaces.IPostLikeService;
 import com.example.pathwisebackend.Models.Like;
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
-import com.example.pathwisebackend.Repositories.PostLikeRepository;
+import com.example.pathwisebackend.Repositories.LikeRepository;
 import com.example.pathwisebackend.Repositories.PostRepository;
 import com.example.pathwisebackend.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PostLikeServiceImpl implements IPostLikeService {
 
-    private final PostLikeRepository likeRepo;
+    private final LikeRepository likeRepo;
     private final PostRepository postRepo;
     private final UserRepository userRepo;
 
@@ -22,7 +23,7 @@ public class PostLikeServiceImpl implements IPostLikeService {
         Post post = postRepo.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        return likeRepo.findByPostPostIdAndUserId(postId, userId)
+        return likeRepo.findByPostPostIdAndCreatedById(postId, userId)
                 .map(existingLike -> {
                     likeRepo.delete(existingLike);
                     return "Unliked";
@@ -30,7 +31,7 @@ public class PostLikeServiceImpl implements IPostLikeService {
                 .orElseGet(() -> {
                     Like newLike = new Like();
                     newLike.setPost(post);
-                    newLike.setUser(user);
+                    newLike.setCreatedBy(user);
                     likeRepo.save(newLike);
                     return "Liked";
                 });

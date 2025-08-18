@@ -1,6 +1,6 @@
 package com.example.pathwisebackend.DTO;
 
-import com.example.pathwisebackend.Models.SessionStatus;
+import com.example.pathwisebackend.Enum.SessionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

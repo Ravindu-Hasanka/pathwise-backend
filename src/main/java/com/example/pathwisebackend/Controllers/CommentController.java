@@ -1,7 +1,8 @@
 package com.example.pathwisebackend.Controllers;
 
+import com.example.pathwisebackend.DTO.CommentDTO;
 import com.example.pathwisebackend.Models.Comment;
-import com.example.pathwisebackend.Services.ICommentService;
+import com.example.pathwisebackend.Interfaces.ICommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,14 @@ public class CommentController {
 
     private final ICommentService commentService;
     @PostMapping("/post/{postId}")
-    public ResponseEntity<Comment> addComment(@PathVariable Long postId,
+    public ResponseEntity<CommentDTO> addComment(@PathVariable Long postId,
                                               @RequestParam Long userId,
                                               @RequestBody String text) {
         return ResponseEntity.ok(commentService.addComment(postId, userId, text));
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<List<Comment>> getComments(@PathVariable Long postId) {
+    public ResponseEntity<List<CommentDTO>> getComments(@PathVariable Long postId) {
         return ResponseEntity.ok(commentService.getCommentsByPost(postId));
     }
 

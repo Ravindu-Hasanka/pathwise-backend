@@ -1,8 +1,8 @@
 package com.example.pathwisebackend.Controllers;
 
 import com.example.pathwisebackend.DTO.SessionDTO;
+import com.example.pathwisebackend.Interfaces.ICoachingSessionService;
 import com.example.pathwisebackend.Models.CoachingSession;
-import com.example.pathwisebackend.Services.ICoachingSessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,11 @@ public class CoachingSessionController {
 
     private final ICoachingSessionService sessionService;
 
-
+    @PostMapping("/schedule")
+    public ResponseEntity<CoachingSession> scheduleSession(@RequestBody SessionDTO dto) {
+        CoachingSession session = sessionService.scheduleSession(dto);
+        return ResponseEntity.ok(session);
+    }
     @GetMapping("/coach/{coachId}")
     public ResponseEntity<List<CoachingSession>> getCoachSessions(@PathVariable Long coachId) {
         return ResponseEntity.ok(sessionService.getCoachSessions(coachId));
