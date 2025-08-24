@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User implements UserDetails {   // ✅ implement UserDetails
+public class User implements UserDetails {  
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,10 +46,9 @@ public class User implements UserDetails {   // ✅ implement UserDetails
 
     private Boolean isActive = true;
 
-    // Relationships (your original code)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuthToken> authTokens;
-
+  
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
@@ -74,7 +73,6 @@ public class User implements UserDetails {   // ✅ implement UserDetails
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Industry> industries;
 
-    // ✅ Implement UserDetails methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(role.name()));

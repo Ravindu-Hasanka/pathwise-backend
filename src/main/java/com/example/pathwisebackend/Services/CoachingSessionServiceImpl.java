@@ -1,6 +1,7 @@
 package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.DTO.SessionDTO;
+import com.example.pathwisebackend.Interfaces.ICoachingSessionService;
 import com.example.pathwisebackend.Models.CoachingSession;
 import com.example.pathwisebackend.Enum.SessionStatus;
 import com.example.pathwisebackend.Models.User;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CoachingSessionServiceImpl implements  ICoachingSessionService {
+public class CoachingSessionServiceImpl implements ICoachingSessionService {
 
     private final CoachingSessionRepository sessionRepo;
     private final UserRepository userRepo;
@@ -64,22 +65,25 @@ public class CoachingSessionServiceImpl implements  ICoachingSessionService {
 
     @Override
      public SessionDTO confirm(Long id) {
-        var cs = sessionRepo.findById(id).orElseThrow();
+        CoachingSession cs = sessionRepo.findById(id).orElseThrow();
         cs.setStatus(SessionStatus.CONFIRMED);
+        sessionRepo.save(cs);
         return map(cs);
     }
 
     @Override
      public SessionDTO cancel(Long id) {
-        var cs = sessionRepo.findById(id).orElseThrow();
+        CoachingSession cs = sessionRepo.findById(id).orElseThrow();
         cs.setStatus(SessionStatus.CANCELLED);
+        sessionRepo.save(cs);
         return map(cs);
     }
 
     @Override
      public SessionDTO complete(Long id) {
-        var cs = sessionRepo.findById(id).orElseThrow();
+        CoachingSession cs = sessionRepo.findById(id).orElseThrow();
         cs.setStatus(SessionStatus.COMPLETED);
+        sessionRepo.save(cs);
         return map(cs);
     }
 

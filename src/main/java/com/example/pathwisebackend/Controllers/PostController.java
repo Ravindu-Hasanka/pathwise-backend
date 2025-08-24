@@ -1,6 +1,7 @@
 package com.example.pathwisebackend.Controllers;
 
 import com.example.pathwisebackend.DTO.PostDTO;
+import com.example.pathwisebackend.Interfaces.IPostService;
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.UserRepository;
@@ -9,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
