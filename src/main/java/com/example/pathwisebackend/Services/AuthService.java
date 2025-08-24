@@ -42,6 +42,7 @@ public class AuthService {
             coach.setPhone(dto.getContactNo());
             coach.setRole(dto.getRole());
             coach.setAddress(dto.getAddress());
+            coach.setDescription(dto.getDescription());
 
             List<Industry> industries = Arrays.stream(dto.getIndustryList())
                     .map(industryDto -> {
@@ -173,7 +174,7 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            return new AuthenticationResponse(null,null, null, "Invalid email or password");
         }
 
         String accessToken = jwtService.generateToken(user);

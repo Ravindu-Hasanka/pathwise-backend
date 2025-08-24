@@ -31,6 +31,7 @@ public class RegisterRequestDto {
 
     private String currentPosition;
     private String currentIndustry;
+    private String description;
 
     @Size(min = 1, message = "At least one industry is required")
     private IndustryDto[] industryList;
