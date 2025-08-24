@@ -6,14 +6,19 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
 @Data
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class User implements UserDetails {   // ✅ implement UserDetails
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +46,7 @@ public class User {
 
     private Boolean isActive = true;
 
+    // Relationships (your original code)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuthToken> authTokens;
 
@@ -67,4 +73,35 @@ public class User {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Industry> industries;
+
+    // ✅ Implement UserDetails methods
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email; // we use email as the username
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // change if you want expiry logic
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // change if you want lock logic
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive != null && isActive;
+    }
 }
