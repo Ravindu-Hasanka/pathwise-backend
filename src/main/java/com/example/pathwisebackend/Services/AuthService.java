@@ -2,6 +2,7 @@ package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.DTO.Auth.AuthenticationResponse;
 import com.example.pathwisebackend.DTO.Auth.RegisterRequestDto;
+import com.example.pathwisebackend.Enum.UserRoles;
 import com.example.pathwisebackend.Models.*;
 import com.example.pathwisebackend.Repositories.*;
 import com.example.pathwisebackend.config.JwtService;
@@ -33,68 +34,138 @@ public class AuthService {
             return new AuthenticationResponse(null, null, null, "User already exists");
         }
 
-        // 2. Create JobSeeker (default role = JOB_SEEKER)
-        JobSeeker jobSeeker = new JobSeeker();
-        jobSeeker.setName(dto.getName());
-        jobSeeker.setEmail(dto.getEmail());
-        jobSeeker.setPassword(passwordEncoder.encode(dto.getPassword()));
-        jobSeeker.setPhone(dto.getContactNo());
-        jobSeeker.setRole(dto.getRole());
-        jobSeeker.setAddress(dto.getAddress());
-        jobSeeker.setCurrentPosition(dto.getCurrentPosition());
-        jobSeeker.setCurrentIndustry(dto.getCurrentIndustry());
+        if(dto.getRole().equals(UserRoles.COACH)){
+            Coach coach = new Coach();
+            coach.setName(dto.getName());
+            coach.setEmail(dto.getEmail());
+            coach.setPassword(passwordEncoder.encode(dto.getPassword()));
+            coach.setPhone(dto.getContactNo());
+            coach.setRole(dto.getRole());
+            coach.setAddress(dto.getAddress());
 
-        List<Industry> industries = Arrays.stream(dto.getIndustryList())
-                .map(industryDto -> {
-                    Industry industry = new Industry();
-                    industry.setName(industryDto.getIndustryName());
-                    industry.setOwner(jobSeeker);
-                    return industry;
-                })
-                .toList();
-        jobSeeker.setIndustries(industries);
+            List<Industry> industries = Arrays.stream(dto.getIndustryList())
+                    .map(industryDto -> {
+                        Industry industry = new Industry();
+                        industry.setName(industryDto.getIndustryName());
+                        industry.setOwner(coach);
+                        return industry;
+                    })
+                    .toList();
+            coach.setIndustries(industries);
 
-        Set<Skill> skills = Arrays.stream(dto.getSkillList())
-                .map(skillDto -> {
-                    Skill skill = new Skill();
-                    skill.setName(skillDto.getSkillName());
-                    return skillsRepository.save(skill); // persist immediately
-                })
-                .collect(Collectors.toSet());
-        jobSeeker.setSkills(skills);
+            Set<Skill> skills = Arrays.stream(dto.getSkillList())
+                    .map(skillDto -> {
+                        Skill skill = new Skill();
+                        skill.setName(skillDto.getSkillName());
+                        return skillsRepository.save(skill); // persist immediately
+                    })
+                    .collect(Collectors.toSet());
+            coach.setSkills(skills);
 
-        Set<Experience> experiences = Arrays.stream(dto.getExperienceList())
-                .map(expDto -> {
-                    Experience exp = new Experience();
-                    exp.setJobRole(expDto.getJobTitle());
-                    exp.setCompany(expDto.getCompanyName());
-                    exp.setStartedAt(expDto.getStartedAt());
-                    exp.setEndedAt(expDto.getEndedAt());
-                    return experienceRepository.save(exp);
-                })
-                .collect(Collectors.toSet());
-        jobSeeker.setExperiences(experiences);
+            Set<Experience> experiences = Arrays.stream(dto.getExperienceList())
+                    .map(expDto -> {
+                        Experience exp = new Experience();
+                        exp.setJobRole(expDto.getJobTitle());
+                        exp.setCompany(expDto.getCompanyName());
+                        exp.setStartedAt(expDto.getStartedAt());
+                        exp.setEndedAt(expDto.getEndedAt());
+                        return experienceRepository.save(exp);
+                    })
+                    .collect(Collectors.toSet());
+            coach.setExperiences(experiences);
 
-        Set<Education> educations = Arrays.stream(dto.getEducationList())
-                .map(eduDto -> {
-                    Education edu = new Education();
-                    edu.setName(eduDto.getEducationName());
-                    edu.setInstitution(eduDto.getInstitute());
-                    edu.setStartDate(eduDto.getStartedAt());
-                    edu.setEndDate(eduDto.getEndedAt());
-                    return educationRepository.save(edu);
-                })
-                .collect(Collectors.toSet());
-        jobSeeker.setEducations(educations);
+            Set<Education> educations = Arrays.stream(dto.getEducationList())
+                    .map(eduDto -> {
+                        Education edu = new Education();
+                        edu.setName(eduDto.getEducationName());
+                        edu.setInstitution(eduDto.getInstitute());
+                        edu.setStartDate(eduDto.getStartedAt());
+                        edu.setEndDate(eduDto.getEndedAt());
+                        return educationRepository.save(edu);
+                    })
+                    .collect(Collectors.toSet());
+            coach.setEducations(educations);
 
-        JobSeeker savedUser = userRepository.save(jobSeeker);
+            Coach savedUser = userRepository.save(coach);
 
-        return new AuthenticationResponse(
-                savedUser.getId(),
-                null,
-                null,
-                "Registration successful"
-        );
+            String accessToken = jwtService.generateToken(savedUser);
+            String refreshToken = jwtService.generateRefreshToken(savedUser);
+
+            return new AuthenticationResponse(
+                    savedUser.getId(),
+                    accessToken,
+                    refreshToken,
+                    "Registration successful"
+            );
+        }
+        else {
+
+            // 2. Create JobSeeker (default role = JOB_SEEKER)
+            JobSeeker jobSeeker = new JobSeeker();
+            jobSeeker.setName(dto.getName());
+            jobSeeker.setEmail(dto.getEmail());
+            jobSeeker.setPassword(passwordEncoder.encode(dto.getPassword()));
+            jobSeeker.setPhone(dto.getContactNo());
+            jobSeeker.setRole(dto.getRole());
+            jobSeeker.setAddress(dto.getAddress());
+            jobSeeker.setCurrentPosition(dto.getCurrentPosition());
+            jobSeeker.setCurrentIndustry(dto.getCurrentIndustry());
+
+            List<Industry> industries = Arrays.stream(dto.getIndustryList())
+                    .map(industryDto -> {
+                        Industry industry = new Industry();
+                        industry.setName(industryDto.getIndustryName());
+                        industry.setOwner(jobSeeker);
+                        return industry;
+                    })
+                    .toList();
+            jobSeeker.setIndustries(industries);
+
+            Set<Skill> skills = Arrays.stream(dto.getSkillList())
+                    .map(skillDto -> {
+                        Skill skill = new Skill();
+                        skill.setName(skillDto.getSkillName());
+                        return skillsRepository.save(skill); // persist immediately
+                    })
+                    .collect(Collectors.toSet());
+            jobSeeker.setSkills(skills);
+
+            Set<Experience> experiences = Arrays.stream(dto.getExperienceList())
+                    .map(expDto -> {
+                        Experience exp = new Experience();
+                        exp.setJobRole(expDto.getJobTitle());
+                        exp.setCompany(expDto.getCompanyName());
+                        exp.setStartedAt(expDto.getStartedAt());
+                        exp.setEndedAt(expDto.getEndedAt());
+                        return experienceRepository.save(exp);
+                    })
+                    .collect(Collectors.toSet());
+            jobSeeker.setExperiences(experiences);
+
+            Set<Education> educations = Arrays.stream(dto.getEducationList())
+                    .map(eduDto -> {
+                        Education edu = new Education();
+                        edu.setName(eduDto.getEducationName());
+                        edu.setInstitution(eduDto.getInstitute());
+                        edu.setStartDate(eduDto.getStartedAt());
+                        edu.setEndDate(eduDto.getEndedAt());
+                        return educationRepository.save(edu);
+                    })
+                    .collect(Collectors.toSet());
+            jobSeeker.setEducations(educations);
+
+            JobSeeker savedUser = userRepository.save(jobSeeker);
+
+            String accessToken = jwtService.generateToken(savedUser);
+            String refreshToken = jwtService.generateRefreshToken(savedUser);
+
+            return new AuthenticationResponse(
+                    savedUser.getId(),
+                    accessToken,
+                    refreshToken,
+                    "Registration successful"
+            );
+        }
     }
 
     public AuthenticationResponse login(String email, String password) {
