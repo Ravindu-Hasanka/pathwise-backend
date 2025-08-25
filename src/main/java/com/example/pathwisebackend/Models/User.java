@@ -53,10 +53,10 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "requester")
+    @OneToMany(mappedBy = "initiator")
     private List<Connection> sentConnections;
 
-    @OneToMany(mappedBy = "requestedUser")
+    @OneToMany(mappedBy = "receiver")
     private List<Connection> receivedConnections;
 
     @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL, orphanRemoval = true)
