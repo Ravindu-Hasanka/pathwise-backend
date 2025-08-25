@@ -45,7 +45,8 @@ public class PostServiceImpl implements IPostService {
                     post.setCaption(updatedPost.getCaption());
                     post.setContent(updatedPost.getContent());
                     post.setContentType(updatedPost.getContentType());
-                    post.setUpdatedAt(updatedPost.getUpdatedAt());
+                    post.setCreatedBy(updatedPost.getCreatedBy());
+                    post.setCreatedAt(updatedPost.getCreatedAt());
                     return postRepository.save(post);
                 })
                 .orElseThrow(() -> new RuntimeException("Post not found with id " + id));

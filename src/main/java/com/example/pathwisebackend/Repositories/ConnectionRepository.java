@@ -19,6 +19,7 @@ public interface ConnectionRepository extends JpaRepository<Connection, Long> {
             "SELECT c.initiator FROM Connection c WHERE c.receiver.id = :userId AND c.status = 'CONNECTED'")
     List<User> findAllConnectedUsers(@Param("userId") Long userId);
 
+
     @Query("SELECT c FROM Connection c " +
             "WHERE (c.receiver.id = :userId) " +
             "AND c.status = 'PENDING'")

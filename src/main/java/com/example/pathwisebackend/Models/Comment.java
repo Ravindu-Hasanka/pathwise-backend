@@ -26,6 +26,7 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User author;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     @JsonBackReference

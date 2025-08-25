@@ -5,6 +5,7 @@ import com.example.pathwisebackend.Interfaces.IPostService;
 import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.UserRepository;
+import com.example.pathwisebackend.Interfaces.IPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,6 @@ public class PostController {
         post.setContent(postDetails.getContent());
         post.setContentType(postDetails.getContentType());
         post.setCreatedBy(author);
-        post.setCreatedAt(postDetails.getCreatedAt());
 
         return postService.createPost(post);
     }
