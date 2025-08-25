@@ -23,7 +23,7 @@ public class SkillsService {
     private final IndustryRepository industryRepository;
     private final GeminiService geminiService;
 
-    public Map<String, Object> getRecommendedResources(Long userId) {
+    public List<Map<String, Object>> getRecommendedResources(Long userId) {
         JobSeeker jobSeeker = jobSeekerRepository.findById(userId).get();
 
         List<Industry> industries = industryRepository.findByOwnerId(userId);

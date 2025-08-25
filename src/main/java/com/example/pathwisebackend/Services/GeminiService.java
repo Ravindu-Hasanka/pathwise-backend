@@ -68,54 +68,37 @@ public class GeminiService {
         }
     }
 
-    public Map<String, Object> runInterviewPrepFlow(List<IndustryDto> industryList) {
-        Map<String, Object> recommendations = new HashMap<>();
+    public List<Map<String, Object>> runInterviewPrepFlow(List<IndustryDto> industryList) {
+        List<Map<String, Object>> recommendedResources = new ArrayList<>();
 
         for (IndustryDto industry : industryList) {
-            List<Map<String, Object>> jobRoleRecommendations = new ArrayList<>();
-
             for (JobRoleDto jobRole : industry.getJobRoles()) {
-                // Ask Gemini about skills
-                String firstPrompt = "I'm going to apply for a " + jobRole.getJobRoleName() + " job. " +
-                        "What are the related skills I need to have and level (beginner, intermediate, expert). " +
-                        "Give them in JSON array format only.\n\n" +
-                        "[{ \"skill\": \"React\", \"level\": \"intermediate\" }]";
-
-                String skillsResponse = callGemini(firstPrompt);
-
-                Type skillsType = new TypeToken<List<SkillDto>>() {}.getType();
-                List<SkillDto> skills = gson.fromJson(skillsResponse, skillsType);
 
                 // Ask Gemini about recommended courses
-                String secondPrompt = "I want to become a " + jobRole.getJobRoleName() + ". " +
-                        "I need to find courses to follow and what skills I can gain. " +
+                String prompt = "I want to become a " + jobRole.getJobRoleName() + ". " +
+                        "I need to find courses, books, and certifications to follow and what skills I can gain. " +
                         "My current skills are: nextjs, react, nest js, java, mongo db, postgres. " +
                         "My current position is intermediate full stack developer.\n\n" +
-                        "Give links of the courses and skills in following format:\n" +
-                        "[{ \"course_link\": \"https://...\", \"expected_skills\": [\"React\", \"Java\"] }]\n\n" +
-                        "Give me at least 5.";
+                        "Give links of the courses/books/certifications and skills in the following format:\n" +
+                        "[{ \"title\": \"Course Name\", \"type\": \"Course/Book/Certification\", \"provider\": \"Provider Name\", \"duration\": \"6h/320 pages/etc.\", \"link\": \"https://...\", \"skill\": \"React\" }]\n\n" +
+                        "Give me at least 5 recommendations.";
 
-                String coursesResponse = callGemini(secondPrompt);
+                String response = callGemini(prompt);
 
-                Type coursesType = new TypeToken<List<CourseDto>>() {}.getType();
-                List<CourseDto> courses = gson.fromJson(coursesResponse, coursesType);
+                try {
+                    Type listType = new TypeToken<List<Map<String, Object>>>() {}.getType();
+                    List<Map<String, Object>> resources = gson.fromJson(response, listType);
 
-                // Update jobRole DTO
-                jobRole.setSkills(skills);
-                jobRole.setCourses(courses);
+                    // Add the resources to the final list
+                    recommendedResources.addAll(resources);
 
-                // Add to recommendations map
-                Map<String, Object> jobRoleData = new HashMap<>();
-                jobRoleData.put("jobRoleName", jobRole.getJobRoleName());
-                jobRoleData.put("skills", skills);
-                jobRoleData.put("courses", courses);
-
-                jobRoleRecommendations.add(jobRoleData);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-            recommendations.put(industry.getName(), jobRoleRecommendations);
         }
 
-        return recommendations;
+        return recommendedResources;
     }
+
 }

@@ -1,5 +1,6 @@
 package com.example.pathwisebackend.config;
 
+import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -60,8 +62,7 @@ public class SecurityConfiguration {
                                         "/v3/api-docs/**",    // OpenAPI JSON endpoints
                                         "/api-docs/**",       // because you configured springdoc.api-docs.path=/api-docs
                                         "/test/**",
-                                "/**"
-
+                                        "/**"
                                 ).permitAll()
                         .anyRequest().authenticated()
                 )
