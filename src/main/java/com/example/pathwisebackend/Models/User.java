@@ -58,10 +58,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "requester")
+    @OneToMany(mappedBy = "initiator")
     private List<Connection> sentConnections;
 
-    @OneToMany(mappedBy = "requestedUser")
+    @OneToMany(mappedBy = "receiver")
     private List<Connection> receivedConnections;
 
     @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -72,6 +72,13 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Industry> industries;
+
+    @OneToMany(mappedBy = "sender")
+    private List<Message> sentMessages;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<Message> receivedMessages;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

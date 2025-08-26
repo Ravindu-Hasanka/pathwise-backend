@@ -24,12 +24,12 @@ public class NetworkServiceImpl implements INetworkService {
     }
 
     public Connection requestConnection(Long senderId, Long userId) {
-        User requestedUser = userRepo.findById(senderId).orElseThrow();
-        User user = userRepo.findById(userId).orElseThrow();
+        User user = userRepo.findById(senderId).orElseThrow();
+        User requestedUser = userRepo.findById(userId).orElseThrow();
 
         Connection conn = new Connection();
-        conn.setRequestedUser(requestedUser);
-        conn.setRequester(user);
+        conn.setReceiver(requestedUser);
+        conn.setInitiator(user);
         conn.setRequestedAt(LocalDateTime.now());
         return connRepo.save(conn);
     }
@@ -55,10 +55,10 @@ public class NetworkServiceImpl implements INetworkService {
         return requests.stream()
                 .map(c -> {
                     User otherUser;
-                    if (c.getRequester().getId().equals(userId)) {
-                        otherUser = c.getRequestedUser();
+                    if (c.getInitiator().getId().equals(userId)) {
+                        otherUser = c.getReceiver();
                     } else {
-                        otherUser = c.getRequester();
+                        otherUser = c.getInitiator();
                     }
                     ConnectionDTO dto = new ConnectionDTO();
                     dto.setConnectionId(c.getConnectionId());
@@ -74,10 +74,10 @@ public class NetworkServiceImpl implements INetworkService {
     }
     public List<ConnectionDTO> getConnectionRequests(Long userId) {
 
-        List<Connection> requests= connRepo.findAllConnectionsByUserId(userId);
+        List<Connection> requests= connRepo.findConnectionRequests(userId);
         return requests.stream()
                 .map(c -> {
-                    User requester = c.getRequestedUser();
+                    User requester = c.getInitiator();
                     ConnectionDTO dto = new ConnectionDTO();
                     dto.setConnectionId(c.getConnectionId());
                     dto.setRequestedUserId(requester.getId());
