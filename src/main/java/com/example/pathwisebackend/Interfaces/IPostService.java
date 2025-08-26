@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IPostService {
     List<Post> getAllPosts();
     Optional<Post> getPostById(Long id);
-    Post createPost(Post post);
+    Post createPost(PostDTO post);
     Post updatePost(Long id, Post post);
     void deletePost(Long id);
     List<PostDTO> getPostsByAuthors(Long userId);

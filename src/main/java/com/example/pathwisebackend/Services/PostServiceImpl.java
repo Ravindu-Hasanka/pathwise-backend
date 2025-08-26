@@ -9,10 +9,12 @@ import com.example.pathwisebackend.Models.Post;
 import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.ConnectionRepository;
 import com.example.pathwisebackend.Repositories.PostRepository;
+import com.example.pathwisebackend.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +24,7 @@ public class PostServiceImpl implements IPostService {
 
     private final PostRepository postRepository;
     private final ConnectionRepository connectionRepository;
-
+    private final UserRepository userRepository;
     @Override
     public List<Post> getAllPosts() {
         return postRepository.findAll();
@@ -34,7 +36,17 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public Post createPost(Post post) {
+    public Post createPost(PostDTO postDetails) {
+
+        User author = userRepository.findById(postDetails.getCreatedBy().getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Post post = new Post();
+        post.setCaption(postDetails.getCaption());
+        post.setContent(postDetails.getContent());
+        post.setContentType(postDetails.getContentType());
+        post.setCreatedBy(author);
+        post.setCreatedAt(new Date());
         return postRepository.save(post);
     }
 

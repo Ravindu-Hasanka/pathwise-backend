@@ -18,7 +18,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @NotBlank(message = "Caption is required")
+    //@NotBlank(message = "Caption is required")
     @Column(length = 200)
     private String caption;
 

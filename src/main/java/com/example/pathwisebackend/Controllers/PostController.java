@@ -3,9 +3,7 @@ package com.example.pathwisebackend.Controllers;
 import com.example.pathwisebackend.DTO.PostDTO;
 import com.example.pathwisebackend.Interfaces.IPostService;
 import com.example.pathwisebackend.Models.Post;
-import com.example.pathwisebackend.Models.User;
 import com.example.pathwisebackend.Repositories.UserRepository;
-import com.example.pathwisebackend.Interfaces.IPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,16 +32,7 @@ public class PostController {
 
     @PostMapping
     public Post createPost(@RequestBody PostDTO postDetails) {
-        User author = userRepository.findById(postDetails.getCreatedBy().getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Post post = new Post();
-        post.setCaption(postDetails.getCaption());
-        post.setContent(postDetails.getContent());
-        post.setContentType(postDetails.getContentType());
-        post.setCreatedBy(author);
-
-        return postService.createPost(post);
+        return postService.createPost(postDetails);
     }
 
 
