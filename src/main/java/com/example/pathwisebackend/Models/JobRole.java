@@ -25,4 +25,9 @@ public class JobRole {
 
     @PositiveOrZero(message = "Hourly teaching rate must be zero or positive")
     private Double hourlyTeachingRate;
+
+    @ManyToOne
+    @JoinColumn(name = "industry_id", nullable = false)
+    private Industry industry;
+
 }
