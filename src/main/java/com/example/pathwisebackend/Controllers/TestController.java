@@ -34,4 +34,9 @@ public class TestController {
     public List<Map<String, Object>> getSkills(@RequestParam Long id) {
         return skillsService.getRecommendedResources(id);
     }
+
+    @GetMapping("/jobs/{id}")
+    public List<Map<String, Object>> getJobs(@RequestParam Long id) {
+        return skillsService.getRecommendedJobs(id);
+    }
 }

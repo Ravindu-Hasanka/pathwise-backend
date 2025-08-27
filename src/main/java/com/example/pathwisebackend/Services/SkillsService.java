@@ -3,6 +3,7 @@ package com.example.pathwisebackend.Services;
 import com.example.pathwisebackend.DTO.IndustryDto;
 import com.example.pathwisebackend.DTO.JobRoleDto;
 import com.example.pathwisebackend.Models.Industry;
+import com.example.pathwisebackend.Models.JobRole;
 import com.example.pathwisebackend.Models.JobSeeker;
 import com.example.pathwisebackend.Repositories.IndustryRepository;
 import com.example.pathwisebackend.Repositories.JobSeekerRepository;
@@ -63,6 +64,20 @@ public class SkillsService {
         industryDtos.add(newIndustry);
 
         return geminiService.runInterviewPrepFlow(industryDtos);
+    }
+
+    public List<Map<String, Object>> getRecommendedJobs(Long userId) {
+        JobSeeker jobSeeker = jobSeekerRepository.findById(userId).get();
+
+        List<Industry> industries = industryRepository.findByOwnerId(userId);
+        List<String> jobNames = industries.stream()
+                .flatMap(industry -> industry.getJobRoles().stream()
+                        .map(JobRole::getJobRoleName))
+                .collect(Collectors.toList());
+
+        jobNames.add("Software Engineer");
+
+        return geminiService.getRelatedJobs(jobNames);
     }
 
 }
