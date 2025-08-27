@@ -101,4 +101,40 @@ public class GeminiService {
         return recommendedResources;
     }
 
+    public List<Map<String, Object>> getRelatedJobs(List<String> jobNames){
+        List<Map<String, Object>> recommendedJobs = new ArrayList<>();
+        for (String jobName : jobNames) {
+            String prompt = "I want to be a" + jobName + ". Give the currently available jobs in the colombo.\n" +
+                    "\n" +
+                    "give me the array of the jobs including this detials\n" +
+                    "\n" +
+                    "Job title: Senior Frontend Developer\n" +
+                    "Company: TechCorp\n" +
+                    "Location: San Francisco, CA\n" +
+                    "Type: Full-time\n" +
+                    "Posted at: 2 days ago\n" +
+                    "description: Build responsive web applications using React and TypeScript. Lead UI initiatives.\n" +
+                    "Salary range: $140,000 - $180,000 (approximate value)\n" +
+                    "link to job: (give exact link to the job)\n" +
+                    "\n" +
+                    "give only the json array\n" +
+                    "\n" +
+                    "if any field you can't find leave it empty";
+
+            String response = callGemini(prompt);
+
+            try {
+                Type listType = new TypeToken<List<Map<String, Object>>>() {}.getType();
+                List<Map<String, Object>> resources = gson.fromJson(response, listType);
+
+                // Add the resources to the final list
+                recommendedJobs.addAll(resources);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return recommendedJobs;
+    }
+
 }
