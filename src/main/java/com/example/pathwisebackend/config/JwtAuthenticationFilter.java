@@ -39,25 +39,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            Optional<User> user = this.userRepository.findByEmail(userEmail);
-            if(!user.isPresent()){
-                throw new UsernameNotFoundException("User not found");
-            }
-            if (jwtService.isTokenValid(jwt, user)){
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        user, null, user.get().getAuthorities()
-                );
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+        try {
+            userEmail = jwtService.extractUsername(jwt);
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                Optional<User> optionalUser = this.userRepository.findByEmail(userEmail);
+
+                if (!optionalUser.isPresent()) {
+                    throw new UsernameNotFoundException("User not found");
+                }
+
+                User user = optionalUser.get();
+
+                if (jwtService.isTokenValid(jwt, optionalUser)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            user, null, user.getAuthorities()
+                    );
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                } else {
+                    // Token is invalid (including expired)
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().write("Token is invalid or expired");
+                    return;
+                }
             }
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token has expired");
+            return;
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized: " + e.getMessage());
+            return;
         }
+
         filterChain.doFilter(request, response);
     }
+
 }

@@ -17,7 +17,7 @@ public class AuthToken {
     private Long authTokenId;
 
     @NotBlank(message = "Token can't be empty")
-    @Column(nullable = false, unique = true)
+    @Column(length = 2048, nullable = false, unique = true)
     private String token;
 
     @NotNull(message = "Issued date is required")
