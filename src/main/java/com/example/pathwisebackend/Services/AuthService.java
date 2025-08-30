@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -126,6 +127,7 @@ public class AuthService {
                     .map(skillDto -> {
                         Skill skill = new Skill();
                         skill.setName(skillDto.getSkillName());
+                        skill.setCreatedAt(new Date(System.currentTimeMillis()));
                         return skillsRepository.save(skill); // persist immediately
                     })
                     .collect(Collectors.toSet());
