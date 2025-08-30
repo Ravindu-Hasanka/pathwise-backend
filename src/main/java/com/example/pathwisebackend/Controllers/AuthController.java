@@ -2,6 +2,7 @@ package com.example.pathwisebackend.Controllers;
 
 import com.example.pathwisebackend.DTO.Auth.AuthenticationResponse;
 import com.example.pathwisebackend.DTO.Auth.LoginRequestDto;
+import com.example.pathwisebackend.DTO.Auth.RefreshTokenRequestDto;
 import com.example.pathwisebackend.DTO.Auth.RegisterRequestDto;
 import com.example.pathwisebackend.Models.JobSeeker;
 import com.example.pathwisebackend.Services.AuthService;
@@ -26,6 +27,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginRequestDto request) {
         AuthenticationResponse response = authService.login(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequestDto request) {
+        AuthenticationResponse response = authService.refreshToken(request.getRefreshToken());
         return ResponseEntity.ok(response);
     }
 }

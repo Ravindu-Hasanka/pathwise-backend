@@ -191,4 +191,28 @@ public class AuthService {
 
         return new AuthenticationResponse(user.getId(),accessToken, refreshToken, "Login successful");
     }
+
+    public AuthenticationResponse refreshToken(String refreshToken) {
+        // 1. Validate refresh token in DB
+        AuthToken storedToken = authTokenRepository.findByToken(refreshToken)
+                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+
+        if (!storedToken.getIsValid() || storedToken.getExpiresAt().before(new java.util.Date())) {
+            throw new RuntimeException("Refresh token expired or invalid");
+        }
+
+        // 2. Get user
+        User user = storedToken.getUser();
+
+        // 3. Generate new access token
+        String newAccessToken = jwtService.generateToken(user);
+
+        return new AuthenticationResponse(
+                user.getId(),
+                newAccessToken,
+                refreshToken,  // reuse the same refresh token
+                "Token refreshed successfully"
+        );
+    }
+
 }

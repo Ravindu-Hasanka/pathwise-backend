@@ -28,6 +28,9 @@ public class JwtService {
     }
 
     private String generateToken(Map<String, Object> claims, User user, long expirationMillis) {
+        claims.put("role", user.getRole().name());
+        claims.put("name", user.getName());
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.getEmail())
