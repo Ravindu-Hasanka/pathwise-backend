@@ -1,11 +1,11 @@
 package com.example.pathwisebackend.Controllers;
 
 import com.example.pathwisebackend.DTO.ConnectionDTO;
-
+import com.example.pathwisebackend.DTO.User.UserDTO;
 import com.example.pathwisebackend.Interfaces.INetworkService;
 import com.example.pathwisebackend.Models.Connection;
-import com.example.pathwisebackend.Models.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,5 +38,13 @@ public class NetworkController {
     @GetMapping("/{userId}/requests")
     public List<ConnectionDTO> getConnectionRequests(@PathVariable Long userId) {
         return networkService.getConnectionRequests(userId);
+    }
+    @GetMapping("/{userId}/sentRequests")
+    public List<ConnectionDTO> getSentRequests(@PathVariable Long userId) {
+        return networkService.getSentRequests(userId);
+    }
+    @GetMapping("/{userId}/suggestions")
+    public ResponseEntity<List<UserDTO>> getSuggestions(@PathVariable Long userId) {
+        return ResponseEntity.ok(networkService.getSuggestions(userId));
     }
 }
