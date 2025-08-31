@@ -1,4 +1,4 @@
-package com.example.pathwisebackend.DTO;
+package com.example.pathwisebackend.dto;
 
 import com.example.pathwisebackend.DTO.User.UserDTO;
 import lombok.Data;

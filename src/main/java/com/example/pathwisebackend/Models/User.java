@@ -1,6 +1,9 @@
 package com.example.pathwisebackend.Models;
 
 import com.example.pathwisebackend.Enum.UserRoles;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -65,9 +68,11 @@ public class User implements UserDetails {
     private List<Connection> receivedConnections;
 
     @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<CoachingSession> coachingSessionsAsCoach;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<CoachingSession> coachingSessionsAsStudent;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)

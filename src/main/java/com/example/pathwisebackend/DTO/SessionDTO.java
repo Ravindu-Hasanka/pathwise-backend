@@ -14,6 +14,7 @@ public class SessionDTO {
     private String sessionType;
     private LocalDateTime startTime;
     private Long duration;
+    private LocalDateTime date;
     private String sessionMode;
     private SessionStatus status;
 }

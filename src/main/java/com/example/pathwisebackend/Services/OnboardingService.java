@@ -7,7 +7,6 @@ import com.example.pathwisebackend.DTO.User.UpdateJobSeekerDTO;
 import com.example.pathwisebackend.Enum.UserRoles;
 import com.example.pathwisebackend.Models.*;
 import com.example.pathwisebackend.Repositories.*;
-import com.example.pathwisebackend.DTO.CoachProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

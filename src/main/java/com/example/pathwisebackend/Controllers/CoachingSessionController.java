@@ -1,41 +1,44 @@
 package com.example.pathwisebackend.Controllers;
 
 import com.example.pathwisebackend.DTO.SessionDTO;
-import com.example.pathwisebackend.Interfaces.ICoachingSessionService;
+import com.example.pathwisebackend.Enum.SessionStatus;
 import com.example.pathwisebackend.Models.CoachingSession;
-import lombok.RequiredArgsConstructor;
+import com.example.pathwisebackend.Services.CoachingSessionService;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/session")
-@RequiredArgsConstructor
+@RequestMapping("api/sessions")
+@CrossOrigin
 public class CoachingSessionController {
 
-    private final ICoachingSessionService sessionService;
+    private final CoachingSessionService sessionService;
 
-    @PostMapping("/schedule")
-    public ResponseEntity<CoachingSession> scheduleSession(@RequestBody SessionDTO dto) {
-        CoachingSession session = sessionService.scheduleSession(dto);
-        return ResponseEntity.ok(session);
-    }
-    @GetMapping("/coach/{coachId}")
-    public ResponseEntity<List<CoachingSession>> getCoachSessions(@PathVariable Long coachId) {
-        return ResponseEntity.ok(sessionService.getCoachSessions(coachId));
+    public CoachingSessionController(CoachingSessionService sessionService) {
+        this.sessionService = sessionService;
     }
 
-    @PostMapping("/{id}/confirm")  public ResponseEntity<SessionDTO> confirm(@PathVariable Long id){ return ResponseEntity.ok(sessionService.confirm(id)); }
-    @PostMapping("/{id}/cancel")   public ResponseEntity<SessionDTO> cancel(@PathVariable Long id){ return ResponseEntity.ok(sessionService.cancel(id)); }
-    @PostMapping("/{id}/complete") public ResponseEntity<SessionDTO> complete(@PathVariable Long id){ return ResponseEntity.ok(sessionService.complete(id)); }
+    // Coach creates session
+    @PostMapping("/create")
+    public ResponseEntity<CoachingSession> createSession(@RequestBody SessionDTO dto) {
+        return ResponseEntity.ok(sessionService.createSession(dto));
+    }
 
-    @GetMapping("/{coachId}")
-    public ResponseEntity<List<SessionDTO>> listForCoachByDate(
-            @PathVariable Long coachId,
-            @RequestParam LocalDateTime date) {
-        return ResponseEntity.ok(sessionService.listForCoachByDate(coachId, date));
+    // Student updates status
+    @PutMapping("/{sessionId}/status")
+    public ResponseEntity<CoachingSession> updateSessionStatus(
+            @PathVariable Long sessionId,
+            @RequestParam Long studentId,
+            @RequestParam SessionStatus status
+    ) {
+        return ResponseEntity.ok(sessionService.updateSessionStatus(sessionId, studentId, status));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CoachingSession>> getAllSessions() {
+        return ResponseEntity.ok(sessionService.getAllSessions());
     }
 }
