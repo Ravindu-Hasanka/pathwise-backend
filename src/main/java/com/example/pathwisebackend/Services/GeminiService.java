@@ -137,4 +137,55 @@ public class GeminiService {
         return recommendedJobs;
     }
 
+    public List<Map<String, Object>> getCareerPaths(List<String> jobNames, String currentJob) {
+        List<Map<String, Object>> careerPaths = new ArrayList<>();
+
+        for (String jobName : jobNames) {
+            String prompt = "You are a career coach AI. The user will provide their current position and a target position.\n" +
+                    "Generate a step-by-step career path to reach the target role.\n" +
+                    "\n" +
+                    "For each step include:\n" +
+                    "- title\n" +
+                    "- role\n" +
+                    "- description\n" +
+                    "- skills (array of skills)\n" +
+                    "- actions (array of objects with title, type, duration, provider, completed=false)\n" +
+                    "\n" +
+                    "Return strictly valid JSON only in this format:\n" +
+                    "[\n" +
+                    " {\n" +
+                    "   \"title\": \"Step 1\",\n" +
+                    "   \"role\": \"Mid-Level Developer\",\n" +
+                    "   \"description\": \"Gain experience in backend systems and databases.\",\n" +
+                    "   \"skills\": [\"Java\", \"Spring Boot\", \"Databases\"],\n" +
+                    "   \"actions\": [\n" +
+                    "     { \"title\": \"Complete Java OOP Course\", \"type\": \"Course\", \"duration\": \"3 weeks\", \"provider\": \"Coursera\", \"completed\": false },\n" +
+                    "     { \"title\": \"Build a backend project\", \"type\": \"Project\", \"duration\": \"1 month\", \"provider\": \"Self\", \"completed\": false }\n" +
+                    "   ]\n" +
+                    " }\n" +
+                    "]\n" +
+                    "Current Position: " + currentJob + "\n" +
+                    "Target Position: " + jobName;
+
+            String response = callGemini(prompt);
+
+            try {
+                Type listType = new TypeToken<List<Map<String, Object>>>() {}.getType();
+                List<Map<String, Object>> steps = gson.fromJson(response, listType);
+
+                Map<String, Object> careerPath = new HashMap<>();
+                careerPath.put("targetRole", jobName);
+                careerPath.put("path", steps);
+
+                careerPaths.add(careerPath);
+
+            } catch (Exception e) {
+                System.err.println("Failed to parse Gemini response for target " + jobName + ": " + response);
+            }
+        }
+
+        return careerPaths;
+    }
+
+
 }

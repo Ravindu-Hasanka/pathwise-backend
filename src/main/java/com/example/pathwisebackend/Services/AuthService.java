@@ -50,6 +50,18 @@ public class AuthService {
                         Industry industry = new Industry();
                         industry.setName(industryDto.getIndustryName());
                         industry.setOwner(coach);
+                        List<JobRole> jobRoles = Arrays.stream(industryDto.getJobRoleDtos())
+                                .map(jobRoleDto -> {
+                                    JobRole jobRole = new JobRole();
+                                    jobRole.setJobRoleName(jobRoleDto.getJobRoleName());
+                                    jobRole.setMinSalary(jobRoleDto.getMinSalary());
+                                    jobRole.setMaxSalary(jobRoleDto.getMaxSalary());
+                                    jobRole.setHourlyTeachingRate(jobRoleDto.getHourlyConsultingSalary());
+                                    jobRole.setIndustry(industry);
+                                    return jobRole;
+                                })
+                                .toList();
+                        industry.setJobRoles(jobRoles);
                         return industry;
                     })
                     .toList();
@@ -118,6 +130,19 @@ public class AuthService {
                         Industry industry = new Industry();
                         industry.setName(industryDto.getIndustryName());
                         industry.setOwner(jobSeeker);
+                        List<JobRole> jobRoles = Arrays.stream(industryDto.getJobRoleDtos())
+                                .map(jobRoleDto -> {
+                                    JobRole jobRole = new JobRole();
+                                    jobRole.setJobRoleName(jobRoleDto.getJobRoleName());
+                                    jobRole.setMinSalary(jobRoleDto.getMinSalary());
+                                    jobRole.setMaxSalary(jobRoleDto.getMaxSalary());
+                                    jobRole.setHourlyTeachingRate(jobRoleDto.getHourlyConsultingSalary());
+                                    jobRole.setIndustry(industry); // set relationship
+                                    return jobRole;
+                                })
+                                .toList();
+
+                        industry.setJobRoles(jobRoles);
                         return industry;
                     })
                     .toList();
