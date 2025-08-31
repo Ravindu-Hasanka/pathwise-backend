@@ -2,18 +2,22 @@ package com.example.pathwisebackend.Services;
 
 import com.example.pathwisebackend.DTO.IndustryDto;
 import com.example.pathwisebackend.DTO.JobRoleDto;
+import com.example.pathwisebackend.DTO.UpdateSkillLevelDto;
 import com.example.pathwisebackend.Models.Industry;
 import com.example.pathwisebackend.Models.JobRole;
 import com.example.pathwisebackend.Models.JobSeeker;
+import com.example.pathwisebackend.Models.Skill;
 import com.example.pathwisebackend.Repositories.IndustryRepository;
 import com.example.pathwisebackend.Repositories.JobSeekerRepository;
 import com.example.pathwisebackend.Repositories.SkillsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,6 +82,23 @@ public class SkillsService {
         jobNames.add("Software Engineer");
 
         return geminiService.getRelatedJobs(jobNames);
+    }
+
+    public List<Skill> getUserSkills(Long userId) {
+        List<Skill> skills = new ArrayList<>();
+        List<Skill> coachSkills = skillsRepository.findByCoaches_Id(userId);
+        skills.addAll(coachSkills);
+        List<Skill> jobSeekerSkills = skillsRepository.findByJobSeekers_Id(userId);
+        skills.addAll(jobSeekerSkills);
+        return skills;
+    }
+
+    public void updateSkillScore(UpdateSkillLevelDto skillLevelDto) {
+        Skill skill = skillsRepository.findById(skillLevelDto.getSkillId())
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
+        skill.setLevel(skillLevelDto.getLevel());
+        skill.setUpdatedAt(new Date(System.currentTimeMillis()));
+        skillsRepository.save(skill);
     }
 
 }

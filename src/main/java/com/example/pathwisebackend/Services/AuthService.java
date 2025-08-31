@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +50,18 @@ public class AuthService {
                         Industry industry = new Industry();
                         industry.setName(industryDto.getIndustryName());
                         industry.setOwner(coach);
+                        List<JobRole> jobRoles = Arrays.stream(industryDto.getJobRoleDtos())
+                                .map(jobRoleDto -> {
+                                    JobRole jobRole = new JobRole();
+                                    jobRole.setJobRoleName(jobRoleDto.getJobRoleName());
+                                    jobRole.setMinSalary(jobRoleDto.getMinSalary());
+                                    jobRole.setMaxSalary(jobRoleDto.getMaxSalary());
+                                    jobRole.setHourlyTeachingRate(jobRoleDto.getHourlyConsultingSalary());
+                                    jobRole.setIndustry(industry);
+                                    return jobRole;
+                                })
+                                .toList();
+                        industry.setJobRoles(jobRoles);
                         return industry;
                     })
                     .toList();
@@ -117,6 +130,19 @@ public class AuthService {
                         Industry industry = new Industry();
                         industry.setName(industryDto.getIndustryName());
                         industry.setOwner(jobSeeker);
+                        List<JobRole> jobRoles = Arrays.stream(industryDto.getJobRoleDtos())
+                                .map(jobRoleDto -> {
+                                    JobRole jobRole = new JobRole();
+                                    jobRole.setJobRoleName(jobRoleDto.getJobRoleName());
+                                    jobRole.setMinSalary(jobRoleDto.getMinSalary());
+                                    jobRole.setMaxSalary(jobRoleDto.getMaxSalary());
+                                    jobRole.setHourlyTeachingRate(jobRoleDto.getHourlyConsultingSalary());
+                                    jobRole.setIndustry(industry); // set relationship
+                                    return jobRole;
+                                })
+                                .toList();
+
+                        industry.setJobRoles(jobRoles);
                         return industry;
                     })
                     .toList();
@@ -126,6 +152,7 @@ public class AuthService {
                     .map(skillDto -> {
                         Skill skill = new Skill();
                         skill.setName(skillDto.getSkillName());
+                        skill.setCreatedAt(new Date(System.currentTimeMillis()));
                         return skillsRepository.save(skill); // persist immediately
                     })
                     .collect(Collectors.toSet());
@@ -191,4 +218,28 @@ public class AuthService {
 
         return new AuthenticationResponse(user.getId(),accessToken, refreshToken, "Login successful");
     }
+
+    public AuthenticationResponse refreshToken(String refreshToken) {
+        // 1. Validate refresh token in DB
+        AuthToken storedToken = authTokenRepository.findByToken(refreshToken)
+                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+
+        if (!storedToken.getIsValid() || storedToken.getExpiresAt().before(new java.util.Date())) {
+            throw new RuntimeException("Refresh token expired or invalid");
+        }
+
+        // 2. Get user
+        User user = storedToken.getUser();
+
+        // 3. Generate new access token
+        String newAccessToken = jwtService.generateToken(user);
+
+        return new AuthenticationResponse(
+                user.getId(),
+                newAccessToken,
+                refreshToken,  // reuse the same refresh token
+                "Token refreshed successfully"
+        );
+    }
+
 }

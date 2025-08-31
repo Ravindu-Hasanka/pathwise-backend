@@ -22,8 +22,8 @@ public class MessageService implements IMessageService {
     }
 
     public List<Message> getConversation(User sender, User receiver) {
-        return messageRepository.findBySenderAndReceiverOrReceiverAndSender(
-                sender, receiver, receiver, sender
+        return messageRepository.getConversation(
+                sender, receiver
         );
     }
 }
