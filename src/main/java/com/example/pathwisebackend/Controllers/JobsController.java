@@ -9,8 +9,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/api/jobs")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
-@CrossOrigin
 public class JobsController {
     private final SkillsService skillsService;
 
